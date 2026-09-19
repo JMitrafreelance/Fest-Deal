@@ -1,0 +1,23 @@
+const API=window.DEALZY_API||"";
+let token=localStorage.getItem("dealzy_admin_token")||"";
+const $=id=>document.getElementById(id);
+function showDash(){ $("login").classList.add("hidden"); $("dashboard").classList.remove("hidden"); loadProducts(); loadPosts(); }
+function msg(t){$("loginMsg").textContent=t;}
+$("loginForm").addEventListener("submit",async e=>{e.preventDefault();try{const r=await fetch(API+"/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("username").value,password:$("password").value})});const d=await r.json();if(!r.ok)throw Error(d.message||"Login failed");token=d.token;localStorage.setItem("dealzy_admin_token",token);showDash();}catch(e){msg(e.message+" (Set the Render API URL in admin.html)");}});
+$("logout").onclick=()=>{localStorage.removeItem("dealzy_admin_token");location.reload()};
+document.querySelectorAll(".side[data-view]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".side[data-view]").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".view").forEach(x=>x.classList.add("hidden"));$(b.dataset.view).classList.remove("hidden");});
+async function api(path,opts={}){opts.headers={...(opts.headers||{}),Authorization:"Bearer "+token,"Content-Type":"application/json"};const r=await fetch(API+path,opts);if(r.status===401){localStorage.removeItem("dealzy_admin_token");location.reload()}const d=await r.json();if(!r.ok)throw Error(d.message||"Request failed");return d}
+async function loadProducts(){try{const data=await api("/products");$("productTable").innerHTML=data.map(p=>`<div class="table-row"><b>${esc(p.name)}</b><span>${esc(p.category)}</span><span>₹${Number(p.price||0).toLocaleString("en-IN")}</span><span class="actions"><button onclick='editProduct(${JSON.stringify(p)})'>Edit</button> <button onclick="deleteProduct('${p._id}')">Delete</button></span></div>`).join("")}catch(e){$("productTable").innerHTML="<p>"+e.message+"</p>"}}
+function editProduct(p){$("productEditor").classList.remove("hidden");$("editorTitle").textContent="Edit Product";$("productId").value=p._id;$("pName").value=p.name;$("pCategory").value=p.category;$("pPrice").value=p.price;$("pOldPrice").value=p.oldPrice||"";$("pImage").value=p.image||"";$("pRating").value=p.rating||"";$("pAmazon").value=p.amazonUrl;$("pDescription").value=p.description||""}
+$("newProduct").onclick=()=>{$("productEditor").classList.remove("hidden");$("productForm").reset();$("productId").value="";$("editorTitle").textContent="Add Product"};
+$("cancelProduct").onclick=()=>$("productEditor").classList.add("hidden");
+$("productForm").onsubmit=async e=>{e.preventDefault();const id=$("productId").value;const body={name:$("pName").value,category:$("pCategory").value,price:Number($("pPrice").value),oldPrice:Number($("pOldPrice").value)||0,image:$("pImage").value,rating:Number($("pRating").value)||0,amazonUrl:$("pAmazon").value,description:$("pDescription").value};try{await api(id?"/products/"+id:"/products",{method:id?"PUT":"POST",body:JSON.stringify(body)});$("productEditor").classList.add("hidden");loadProducts()}catch(e){alert(e.message)}};
+async function deleteProduct(id){if(confirm("Delete this product?")){await api("/products/"+id,{method:"DELETE"});loadProducts()}}
+async function loadPosts(){try{const data=await api("/posts");$("postTable").innerHTML=data.map(p=>`<div class="table-row"><b>${esc(p.title)}</b><span>${esc(p.slug)}</span><span>${new Date(p.updatedAt||p.createdAt).toLocaleDateString()}</span><span class="actions"><button onclick='editPost(${JSON.stringify(p)})'>Edit</button> <button onclick="deletePost('${p._id}')">Delete</button></span></div>`).join("")}catch(e){$("postTable").innerHTML="<p>"+e.message+"</p>"}}
+$("newPost").onclick=()=>{$("postEditor").classList.remove("hidden");$("postForm").reset();$("postId").value=""};
+$("cancelPost").onclick=()=>$("postEditor").classList.add("hidden");
+function editPost(p){$("postEditor").classList.remove("hidden");$("postId").value=p._id;$("postTitle").value=p.title;$("postSlug").value=p.slug;$("postContent").value=p.content}
+$("postForm").onsubmit=async e=>{e.preventDefault();const id=$("postId").value;const body={title:$("postTitle").value,slug:$("postSlug").value,content:$("postContent").value};await api(id?"/posts/"+id:"/posts",{method:id?"PUT":"POST",body:JSON.stringify(body)});$("postEditor").classList.add("hidden");loadPosts()};
+async function deletePost(id){if(confirm("Delete this post?")){await api("/posts/"+id,{method:"DELETE"});loadPosts()}}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+if(token)showDash();

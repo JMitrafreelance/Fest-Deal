@@ -1,0 +1,13 @@
+const API = window.DEALZY_API || "";
+const demoProducts = [
+ {name:"Wireless Noise Cancelling Headphones",category:"Electronics",price:2499,oldPrice:3999,rating:4.6,image:"",amazonUrl:"https://www.amazon.in/",description:"Immersive sound and comfortable all-day listening."},
+ {name:"Minimal Analog Watch",category:"Accessories",price:1299,oldPrice:1999,rating:4.4,image:"",amazonUrl:"https://www.amazon.in/",description:"Clean everyday design for work and casual looks."},
+ {name:"Smart LED Desk Lamp",category:"Electronics",price:899,oldPrice:1499,rating:4.3,image:"",amazonUrl:"https://www.amazon.in/",description:"Modern desk lighting with adjustable brightness."},
+ {name:"Everyday Casual Jacket",category:"Men’s",price:1899,oldPrice:2999,rating:4.5,image:"",amazonUrl:"https://www.amazon.in/",description:"Versatile layer for everyday styling."}
+];
+let products=[];
+async function loadProducts(){try{if(!API || API.includes("YOUR-")) throw 0; const r=await fetch(API+"/products"); if(!r.ok) throw 0; products=await r.json();}catch(e){products=demoProducts;} render("All");}
+function render(category="All"){const grid=document.getElementById("productGrid");const list=category==="All"?products:products.filter(p=>p.category===category);grid.innerHTML=list.map(p=>`<article class="product"><div class="product-img">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:`<div class="emoji">🛍️</div>`}</div><div class="product-body"><div class="stars">★ ${Number(p.rating||0).toFixed(1)}</div><h3>${esc(p.name)}</h3><div class="desc">${esc(p.description||"Curated product pick.")}</div><div class="price">₹${Number(p.price||0).toLocaleString("en-IN")} <span class="old">${p.oldPrice?"₹"+Number(p.oldPrice).toLocaleString("en-IN"):""}</span></div><a class="btn buy" href="${esc(p.amazonUrl)}" target="_blank" rel="nofollow sponsored noopener">Buy it on Amazon →</a></div></article>`).join("") || `<p style="color:#9da5b5">No products in this category yet.</p>`;}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active")); if(b.classList.contains("filter")) b.classList.add("active");render(b.dataset.category);document.getElementById("products").scrollIntoView({behavior:"smooth"});}));
+loadProducts();

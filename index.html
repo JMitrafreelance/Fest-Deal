@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Dealzy - discover trending products and shop through trusted affiliate links.">
+  <title>Dealzy — Premium Affiliate Store</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span>DEAL</span>ZY</a>
+  <nav><a href="#home">Home</a><a href="#products">Products</a><a href="#categories">Categories</a><a href="#deals">Deals</a><a href="admin.html">Admin</a></nav>
+  <a class="telegram" href="https://t.me/webbdeal" target="_blank" rel="noopener">Join Telegram</a>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">PREMIUM DEAL DISCOVERY</div>
+    <h1>Find it.<br><span>Compare it.</span><br>Deal it.</h1>
+    <p>Discover curated products, trending deals and useful shopping picks. Buy through our affiliate links.</p>
+    <a class="btn primary" href="#products">Explore Products</a>
+    <a class="btn glass" href="https://t.me/webbdeal" target="_blank" rel="noopener">Telegram Deals →</a>
+  </div>
+  <div class="hero-card">
+    <div class="orb"></div>
+    <div class="floating-tag">TODAY'S PICK</div>
+    <div class="hero-product">
+      <div class="product-art">⚡</div>
+      <div><b>Trending Deals</b><small>Updated from Admin Dashboard</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="categories" class="section">
+  <div class="section-head"><div><span class="eyebrow">SHOP BY TYPE</span><h2>Explore Categories</h2></div></div>
+  <div class="category-grid">
+    <button data-category="Women’s">👗 <b>Women’s</b></button>
+    <button data-category="Men’s">🧥 <b>Men’s</b></button>
+    <button data-category="Accessories">⌚ <b>Accessories</b></button>
+    <button data-category="Electronics">🎧 <b>Electronics</b></button>
+  </div>
+</section>
+
+<section id="products" class="section">
+  <div class="section-head">
+    <div><span class="eyebrow">CURATED STORE</span><h2>Featured Products</h2></div>
+    <div class="filters"><button class="filter active" data-category="All">All</button><button class="filter" data-category="Women’s">Women’s</button><button class="filter" data-category="Men’s">Men’s</button><button class="filter" data-category="Accessories">Accessories</button><button class="filter" data-category="Electronics">Electronics</button></div>
+  </div>
+  <div id="productGrid" class="product-grid"></div>
+</section>
+
+<section id="deals" class="deal-banner">
+  <div><span class="eyebrow">DEAL ALERTS</span><h2>Get new deals on Telegram.</h2><p>Follow <b>@webbdeal</b> for product updates and special offers.</p></div>
+  <a class="btn primary" href="https://t.me/webbdeal" target="_blank" rel="noopener">Join @webbdeal</a>
+</section>
+</main>
+
+<footer>
+  <div><a class="brand" href="#"><span>DEAL</span>ZY</a><p>Affiliate product discovery platform.</p></div>
+  <div><b>Pages</b><a href="#products">Products</a><a href="#categories">Categories</a><a href="admin.html">Admin</a></div>
+  <div><b>Legal</b><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Disclaimer</a></div>
+  <div><b>Connect</b><a href="https://t.me/webbdeal" target="_blank">Telegram</a></div>
+  <div class="copyright">© 2026 Dealzy. Affiliate links may earn us a commission.</div>
+</footer>
+<script>
+  window.DEALZY_API = "https://YOUR-RENDER-SERVICE.onrender.com/api";
+</script>
+<script src="app.js"></script>
+</body>
+</html>
