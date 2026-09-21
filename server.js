@@ -59,3 +59,5 @@ const HOST = "0.0.0.0";
 app.listen(PORT, HOST, () => {
   console.log(`Server running on port ${PORT}`);
 });
+const API_URL = "https://fest-deal-1.onrender.com/api"; 
+fetch(`${API_URL}/products`)
