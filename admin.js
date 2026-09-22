@@ -21,3 +21,11 @@ $("postForm").onsubmit=async e=>{e.preventDefault();const id=$("postId").value;c
 async function deletePost(id){if(confirm("Delete this post?")){await api("/posts/"+id,{method:"DELETE"});loadPosts()}}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 if(token)showDash();
+fetch(`${API_BASE_URL}/products`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error("API Error:", error);
+  });
