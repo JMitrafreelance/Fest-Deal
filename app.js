@@ -11,3 +11,11 @@ function render(category="All"){const grid=document.getElementById("productGrid"
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active")); if(b.classList.contains("filter")) b.classList.add("active");render(b.dataset.category);document.getElementById("products").scrollIntoView({behavior:"smooth"});}));
 loadProducts();
+fetch(`${API_BASE_URL}/products`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error("API Error:", error);
+  });
