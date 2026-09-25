@@ -1,3 +1,4 @@
+const API_URL = window.DEALZY_API || "https://fest-deal-1.onrender.com/api";
 const API=window.DEALZY_API||"";
 let token=localStorage.getItem("dealzy_admin_token")||"";
 const $=id=>document.getElementById(id);
